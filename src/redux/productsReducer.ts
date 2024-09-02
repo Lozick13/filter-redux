@@ -1,40 +1,25 @@
 import { action } from '../interfaces/action';
 import { product } from '../interfaces/product';
 import { products } from '../interfaces/products';
-import {
-	ADD_PRODUCT,
-	DELETE_PRODUCT,
-	SET_FILTER,
-	SET_NAME,
-	SET_PRICE,
-} from './actions';
+import { ADD_PRODUCT, DELETE_PRODUCT, PRODUCT_FILTRATION } from './actions';
 
 const initialState: products = {
-	nameValue: '',
-	priceValue: null,
-	filterValue: null,
 	productsValue: [],
 	filteredProductsValue: [],
 };
 
 export const productsReducer = (state = initialState, action: action) => {
 	switch (action.type) {
-		case SET_NAME: {
-			return { ...state, nameValue: action.payload };
-		}
-		case SET_PRICE: {
-			return { ...state, priceValue: action.payload };
-		}
 		case ADD_PRODUCT: {
 			if (
-				state.nameValue === '' ||
-				state.priceValue === null ||
-				state.priceValue < 1
+				action.payload.name === '' ||
+				action.payload.price === null ||
+				action.payload.price < 1
 			)
 				return state;
 
 			const existingProductIndex = state.productsValue.findIndex(
-				p => p.name === state.nameValue
+				p => p.name === action.payload.name
 			);
 
 			if (existingProductIndex >= 0) {
@@ -42,14 +27,12 @@ export const productsReducer = (state = initialState, action: action) => {
 
 				updatedProducts[existingProductIndex] = {
 					...updatedProducts[existingProductIndex],
-					price: state.priceValue,
+					price: action.payload.price,
 				};
 
 				return {
 					...state,
 					productsValue: updatedProducts,
-					nameValue: '',
-					priceValue: null,
 				};
 			} else {
 				return {
@@ -58,12 +41,10 @@ export const productsReducer = (state = initialState, action: action) => {
 						...state.productsValue,
 						{
 							id: '' + Date.now(),
-							name: state.nameValue,
-							price: state.priceValue,
+							name: action.payload.name,
+							price: action.payload.price,
 						},
 					],
-					nameValue: '',
-					priceValue: null,
 				};
 			}
 		}
@@ -73,7 +54,7 @@ export const productsReducer = (state = initialState, action: action) => {
 				productsValue: state.productsValue.filter(p => p.id !== action.payload),
 			};
 		}
-		case SET_FILTER: {
+		case PRODUCT_FILTRATION: {
 			const filterValue: string | null = action.payload;
 			let filteredProductsValue: product[] = [];
 
@@ -84,11 +65,9 @@ export const productsReducer = (state = initialState, action: action) => {
 
 			return {
 				...state,
-				filterValue: filterValue,
 				filteredProductsValue: filteredProductsValue,
 			};
 		}
-
 		default:
 			return state;
 	}

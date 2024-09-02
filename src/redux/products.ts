@@ -1,28 +1,12 @@
-import {
-	ADD_PRODUCT,
-	DELETE_PRODUCT,
-	SET_FILTER,
-	SET_NAME,
-	SET_PRICE,
-} from './actions';
+import { ADD_PRODUCT, DELETE_PRODUCT, PRODUCT_FILTRATION } from './actions';
 
-export const setName = (payload: string) => {
-	return {
-		type: SET_NAME,
-		payload,
-	};
-};
-
-export const setPrice = (payload: number | null) => {
-	return {
-		type: SET_PRICE,
-		payload,
-	};
-};
-
-export const addProduct = () => {
+export const addProduct = (name: string, price: number) => {
 	return {
 		type: ADD_PRODUCT,
+		payload: {
+			name: name,
+			price: price,
+		},
 	};
 };
 
@@ -33,9 +17,9 @@ export const deleteProduct = (payload: string) => {
 	};
 };
 
-export const setFilter = (payload: string | null) => {
+export const productFiltration = (payload: string | null) => {
 	return {
-		type: SET_FILTER,
+		type: PRODUCT_FILTRATION,
 		payload,
 	};
 };

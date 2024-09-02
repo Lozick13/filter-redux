@@ -1,14 +1,12 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { state } from '../../interfaces/state';
-import { setFilter } from '../../redux/products';
+import { FC, useState } from 'react';
 import BaseCheckbox from '../../ui/BaseCheckbox/BaseCheckbox';
 import BaseInput from '../../ui/BaseInput/BaseInput';
 import classes from './filter.module.css';
 
-const Filter = () => {
-	const dispatch = useDispatch();
-	const { filterValue } = useSelector((state: state) => state.products);
+const Filter: FC<{
+	filter: string | null;
+	setFilter: (value: string | null) => void;
+}> = ({ filter, setFilter }) => {
 	const [visibleInput, setVisibleInput] = useState<boolean>();
 
 	return (
@@ -18,7 +16,7 @@ const Filter = () => {
 					id='filter-by-name'
 					action={(visible: boolean) => {
 						setVisibleInput(visible);
-						dispatch(setFilter(visible ? '' : null));
+						setFilter(visible ? '' : null);
 					}}
 					text='Filtering by name'
 				/>
@@ -29,10 +27,10 @@ const Filter = () => {
 						type='text'
 						change={e => {
 							e.preventDefault();
-							dispatch(setFilter(e.target.value));
+							setFilter(e.target.value);
 						}}
 						required={false}
-						value={filterValue === null ? '' : filterValue}
+						value={filter === null ? '' : filter}
 					/>
 				)}
 			</div>

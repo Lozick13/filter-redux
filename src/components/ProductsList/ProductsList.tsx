@@ -1,18 +1,13 @@
 import { FC } from 'react';
-import { useDispatch } from 'react-redux';
 import { product } from '../../interfaces/product';
-import { deleteProduct, setName, setPrice } from '../../redux/products';
 import BaseButton from '../../ui/BaseButton/BaseButton';
 import classes from './productslist.module.css';
 
-const ProductsList: FC<{ products: product[] }> = ({ products }) => {
-	const dispatch = useDispatch();
-
-	const edit = (p: product) => {
-		dispatch(setName(p.name));
-		dispatch(setPrice(p.price));
-	};
-
+const ProductsList: FC<{
+	products: product[];
+	editData: (product: product) => void;
+	deleteData: (id: string) => void;
+}> = ({ products, editData, deleteData }) => {
 	return (
 		<>
 			{products.length > 0 ? (
@@ -26,14 +21,14 @@ const ProductsList: FC<{ products: product[] }> = ({ products }) => {
 							<div className={classes['products-list__buttons']}>
 								<BaseButton
 									click={() => {
-										edit(p);
+										editData(p);
 									}}
 								>
 									<i className='material-icons'>edit</i>
 								</BaseButton>
 								<BaseButton
 									click={() => {
-										dispatch(deleteProduct(p.id));
+										deleteData(p.id);
 									}}
 								>
 									<i className='material-icons'>delete</i>
