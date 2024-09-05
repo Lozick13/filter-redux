@@ -15,14 +15,16 @@ function App() {
 	);
 	const [name, setName] = useState<string>('');
 	const [price, setPrice] = useState<number | null>(null);
+	const [selectProductId, setSelectProductId] = useState<string | null>(null);
 	const [filter, setFilter] = useState<string | null>(null);
 
 	const addData = () => {
-		if (price !== null) dispatch(addProduct(name, price));
+		if (price !== null) dispatch(addProduct(name, price, selectProductId));
 	};
 	const editData = (p: product) => {
 		setName(p.name);
 		setPrice(p.price);
+		setSelectProductId(p.id);
 	};
 	const deleteData = (id: string) => {
 		dispatch(deleteProduct(id));
