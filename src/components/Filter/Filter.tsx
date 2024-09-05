@@ -16,7 +16,6 @@ const Filter: FC<{
 					id='filter-by-name'
 					action={(visible: boolean) => {
 						setVisibleInput(visible);
-						setFilter(visible ? '' : null);
 					}}
 					text='Filtering by name'
 				/>
@@ -27,7 +26,8 @@ const Filter: FC<{
 						type='text'
 						change={e => {
 							e.preventDefault();
-							setFilter(e.target.value);
+
+							setFilter(e.target.value === '' ? null : e.target.value);
 						}}
 						required={false}
 						value={filter === null ? '' : filter}
